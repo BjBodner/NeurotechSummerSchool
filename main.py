@@ -6,6 +6,7 @@ import imutils
 import time
 import cv2
 import numpy as np
+from eye_tracking_feature import EyeTrackingFeature
 
 from motion_feature import MotionFeature
 # construct the argument parser and parse the arguments
@@ -34,6 +35,7 @@ gaussian_blur_size = 7
 
 
 motion_feature = MotionFeature()
+eye_tracking_feature = EyeTrackingFeature()
 
 i = 0
 # loop over the frames of the video
@@ -49,10 +51,12 @@ while True:
     if frame is None:
         break
 
-    val = motion_feature(frame)
+    motion_feature_ = motion_feature(frame)
+    eye_tracking_feature_ = eye_tracking_feature(frame)
+
     i += 1
     if i == print_freq:
-        print(val)
+        print(motion_feature_, eye_tracking_feature_)
         i = 0
 
     # # resize the frame, convert it to grayscale, and blur it
