@@ -24,10 +24,6 @@ while True:
     img_size = 500
     img = np.zeros((img_size, img_size, 3), np.uint8)
 
-    # bar_x0 = img_size - int(0.6 * img_size)
-    # bar_x1 = img_size - int(0.8 * img_size)
-    # bar_y1 = img_size - int(0.8 * img_size)
-    # bar_y0 = bar_x1 - cumulative_score
 
     bar_y1 = 400
     bar_y0 = bar_y1 - cumulative_score + 1
