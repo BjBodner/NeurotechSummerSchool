@@ -35,11 +35,5 @@ class VideoFeatures:
         motion_feature_ = self.motion_feature(frame)
         eye_tracking_feature_ = self.eye_tracking_feature(frame)
 
-        self.i += 1
-        if self.i == self.print_freq:
-            print(motion_feature_, eye_tracking_feature_)
-            self.i = 0
-
-
         video_features = pd.DataFrame([motion_feature_, eye_tracking_feature_], index=VIDEO_COLUMNS).T
         return video_features

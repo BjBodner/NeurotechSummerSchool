@@ -6,7 +6,7 @@ from pylsl import StreamInlet, resolve_stream
 import numpy as np
 import matplotlib.pyplot as plt
 from sympy import beta
-from utils import power_spectrum, add_to_queue
+from relaxation_score_calculator import power_spectrum, add_to_queue
 from eeg_features import calc_band_features
 from functools import partial
 import time
