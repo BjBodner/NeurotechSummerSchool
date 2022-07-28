@@ -23,11 +23,11 @@ args = vars(ap.parse_args())
 firstFrame = None
 
 i = 0
-smoothed_motion_feature = 0
-max_biffer_size = 10
+# smoothed_motion_feature = 0
+# max_biffer_size = 10
 print_freq = 10
-smoothing = 0.90
-frames_buffer = []
+# smoothing = 0.90
+# frames_buffer = []
 gaussian_blur_size = 7
 
 
@@ -41,6 +41,10 @@ class MotionFeature:
         self.scale = 3.
         self.baseline = 5.0
         self.smoothed_motion_feature = 0.0
+        self.max_buffer_size = 10
+        self.smoothing = 0.9
+        self.gaussian_blur_size = 7
+        self.img_width = 500
         
     def transform(self, value):
         transformed_val = np.tanh(- (value - self.baseline) / self.scale)
@@ -49,11 +53,11 @@ class MotionFeature:
     def __call__(self, frame):
         
         # resize the frame, convert it to grayscale, and blur it
-        frame_ = imutils.resize(frame, width=500)
+        frame_ = imutils.resize(frame, width=self.img_width)
         gray = cv2.cvtColor(frame_, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, (gaussian_blur_size, gaussian_blur_size), 0)
+        gray = cv2.GaussianBlur(gray, (self.gaussian_blur_size, self.gaussian_blur_size), 0)
 
-        if len(self.frames_buffer) > max_biffer_size:
+        if len(self.frames_buffer) > self.max_buffer_size:
             self.frames_buffer.pop(0)
         self.frames_buffer.append(gray)
 
@@ -66,7 +70,7 @@ class MotionFeature:
 
         # calculate motion feature
         motion_feature = np.mean(frameDelta)
-        self.smoothed_motion_feature = smoothing * self.smoothed_motion_feature + (1-smoothing) * motion_feature
+        self.smoothed_motion_feature = self.smoothing * self.smoothed_motion_feature + (1-self.smoothing) * motion_feature
         
         transformed_val = self.transform(self.smoothed_motion_feature)
         return transformed_val

@@ -44,7 +44,6 @@ while True:
     frame = frame if args.get("video", None) is None else frame[1]
 
     # if the frame could not be grabbed, then we have reached the end
-    text = "Unoccupied"
 	# if the frame could not be grabbed, then we have reached the end
 	# of the video
     if frame is None:
