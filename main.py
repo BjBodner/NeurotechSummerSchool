@@ -6,13 +6,18 @@ import argparse
 
 logger = PrintLogger()
 parser = argparse.ArgumentParser()
-parser.add_argument("--use_eeg", action="store_true", default=False, help="increase output verbosity")
+parser.add_argument("--use_eeg", action="store_true", default=False, help="add eeg features to the relaxation score, connect with open bci")
+parser.add_argument("--speed_factor", type=float, default=0.5, help="change the speed the tree starts up")
 args = parser.parse_args()
+
+
+speed_factor = args.speed_factor
 
 relaxation_score_calculator = RelaxationScoreCalculator(args.use_eeg)
 cumulative_score = 0
 cumulative_score_ = 0
 MAX_SCORE = 100
+speed_constant = 0.5
 # cv2.namedWindow('score', cv2.WINDOW_NORMAL)
 
 empty_tree_img = cv2.imread(r'pictures/empty.png')
@@ -27,7 +32,7 @@ while True:
     relaxation_score, feature_vector = relaxation_score_calculator.calc_score()
     logger.log(relaxation_score, feature_vector)
 
-    cumulative_score_ = np.clip(cumulative_score_ + relaxation_score, 0, MAX_SCORE)
+    cumulative_score_ = np.clip(cumulative_score_ + (relaxation_score * speed_factor) , 0, MAX_SCORE)
     cumulative_score = int(cumulative_score_)
 
 
