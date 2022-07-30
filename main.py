@@ -15,8 +15,8 @@ cumulative_score_ = 0
 MAX_SCORE = 100
 # cv2.namedWindow('score', cv2.WINDOW_NORMAL)
 
-empty_tree_img = cv2.imread(r'pictures\empty.png')
-full_tree_img = cv2.imread(r'pictures\full.png')
+empty_tree_img = cv2.imread(r'pictures/empty.png')
+full_tree_img = cv2.imread(r'pictures/full.png')
 
 
 
