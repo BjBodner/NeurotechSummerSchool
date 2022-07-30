@@ -11,7 +11,7 @@ parser.add_argument("--speed_factor", type=float, default=0.5, help="change the 
 args = parser.parse_args()
 
 
-speed_factor = args.speed_factor
+speed_factor = 1.0 if args.use_eeg else args.speed_factor
 
 relaxation_score_calculator = RelaxationScoreCalculator(args.use_eeg)
 cumulative_score = 0
@@ -20,8 +20,8 @@ MAX_SCORE = 100
 speed_constant = 0.5
 # cv2.namedWindow('score', cv2.WINDOW_NORMAL)
 
-empty_tree_img = cv2.imread(r'pictures/empty.png')
-full_tree_img = cv2.imread(r'pictures/full.png')
+empty_tree_img = cv2.imread(r'pictures/new_empty.jpg')
+full_tree_img = cv2.imread(r'pictures/new_full.jpg')
 
 
 
@@ -51,8 +51,11 @@ while True:
     np.sum(full_tree_img != 255, (1,2)) > img_size
     threshold = 200
 
-    y_tree_start = np.where(np.sum(full_tree_img != 255, (1,2)) > threshold)[0][-1]
-    y_tree_end = np.where(np.sum(full_tree_img != 255, (1,2)) > threshold)[0][0]
+    start_offset = 120
+    stop_offset = 20
+
+    y_tree_start = np.where(np.sum(full_tree_img != 255, (1,2)) > threshold)[0][-1] - start_offset
+    y_tree_end = np.where(np.sum(full_tree_img != 255, (1,2)) > threshold)[0][0] + stop_offset 
 
     tree_size = np.abs(y_tree_end - y_tree_start)
     normalized_score = cumulative_score_ / MAX_SCORE
