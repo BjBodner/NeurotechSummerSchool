@@ -2,9 +2,14 @@ from relaxation_score_calculator import RelaxationScoreCalculator
 from print_logger import PrintLogger
 import numpy as np
 import cv2
+import argparse
 
 logger = PrintLogger()
-relaxation_score_calculator = RelaxationScoreCalculator()
+parser = argparse.ArgumentParser()
+parser.add_argument("--use_eeg", action="store_true", default=False, help="increase output verbosity")
+args = parser.parse_args()
+
+relaxation_score_calculator = RelaxationScoreCalculator(args.use_eeg)
 cumulative_score = 0
 cumulative_score_ = 0
 MAX_SCORE = 100
@@ -12,6 +17,7 @@ MAX_SCORE = 100
 
 empty_tree_img = cv2.imread(r'pictures\empty.png')
 full_tree_img = cv2.imread(r'pictures\full.png')
+
 
 
 cv2.namedWindow('score')
