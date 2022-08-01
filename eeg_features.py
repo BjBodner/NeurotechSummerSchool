@@ -54,10 +54,10 @@ class EEGFeatures:
         self.data_queue = np.empty((1, 4))
         self.timestamps_queue = np.empty((1))
 
-        self.alpha_baseline = 300
-        self.alpha_scale = 500
-        self.theta_baseline = 300
-        self.theta_scale = 1000
+        self.alpha_baseline = 6
+        self.alpha_scale = 3
+        self.theta_baseline = 6
+        self.theta_scale = 3
 
     def transform(self, value, baseline, scale):
         transformed_val = np.tanh((value - baseline) / scale)
@@ -85,6 +85,8 @@ class EEGFeatures:
             theta_feature = self.calc_theta_features(freq, spectrum)
             transformed_theta_feature = self.transform(theta_feature, self.theta_baseline, self.theta_scale)
 
+            # print(f"alpha: {alpha_feature}, theta: {theta_feature}, log alpha: {np.log(alpha_feature)}, log theta: {np.log(theta_feature)}")
+            # print(f"alpha: {alpha_feature}, theta: {theta_feature}")
             # concatenate features
             band_features = pd.DataFrame([transformed_alpha_feature, transformed_theta_feature], index=MEAN_BAND_COLUMNS).T
 
@@ -98,12 +100,14 @@ class EEGFeatures:
     def calc_alpha_features(freq, spectrum):
         alpha_idx = np.where((freq > ALPHA_BAND[0]) & (freq < ALPHA_BAND[1]))[0]
         alpha_features = np.mean(np.mean(spectrum[alpha_idx], 0))
+        alpha_features = np.log(alpha_features)
         return alpha_features
 
     @staticmethod
     def calc_theta_features(freq, spectrum):
         theta_idx = np.where((freq > THETA_BAND[0]) & (freq < THETA_BAND[1]))[0]
         theta_features = np.mean(np.mean(spectrum[theta_idx], 0))
+        theta_features = np.log(theta_features)
         return theta_features
 
 
